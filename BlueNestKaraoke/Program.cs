@@ -6,6 +6,9 @@ using BlueNestKaraoke.Data;
 using BlueNestKaraoke.Data.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.DependencyInjection; // Add this using directive
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +20,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
 })
-.AddEntityFrameworkStores<ApplicationContext>();
+.AddEntityFrameworkStores<ApplicationContext>(); // This should now work
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

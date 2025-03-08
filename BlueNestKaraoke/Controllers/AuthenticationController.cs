@@ -31,22 +31,23 @@ namespace BlueNestKaraoke.Controllers
                 return Unauthorized();
             }
 
-            var token = GenerateJwtToken(user);
+            var token = await GenerateJwtToken(user);
             return Ok(new { token });
         }
 
-        private string GenerateJwtToken(ApplicationUser user)
+        private async Task<string> GenerateJwtToken(ApplicationUser user)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Name, user.UserName ?? string.Empty)
             };
 
             var roles = await _userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HMACSHA256);
+            var keyString = _configuration["Jwt:Key"] ?? throw new NullReferenceException("Jwt key is not set.");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
@@ -62,7 +63,7 @@ namespace BlueNestKaraoke.Controllers
 
     public class LoginModel
     {
-        public string PhoneNumber { get; set; }
-        public string Password { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Password { get; set; }
     }
 }

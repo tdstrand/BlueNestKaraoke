@@ -16,16 +16,16 @@ namespace BlueNestKaraoke.Pages
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel? Input { get; set; }
 
         public class InputModel
         {
             [Required]
-            public string PhoneNumber { get; set; }
+            public string? PhoneNumber { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
-            public string Password { get; set; }
+            public string? Password { get; set; }
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
@@ -35,7 +35,7 @@ namespace BlueNestKaraoke.Pages
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Input.PhoneNumber, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input?.PhoneNumber, Input?.Password, Input?.RememberMe ?? false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     return LocalRedirect("~/");
