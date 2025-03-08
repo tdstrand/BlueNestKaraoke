@@ -25,12 +25,15 @@ namespace BlueNestKaraoke.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.PhoneNumber);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            if (string.IsNullOrWhiteSpace(model.PhoneNumber) || string.IsNullOrWhiteSpace(model.Password))
             {
                 return Unauthorized();
             }
-
+            var user = await _userManager.FindByNameAsync(model.PhoneNumber!);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password!))
+            {
+                return Unauthorized();
+            }
             var token = await GenerateJwtToken(user);
             return Ok(new { token });
         }
