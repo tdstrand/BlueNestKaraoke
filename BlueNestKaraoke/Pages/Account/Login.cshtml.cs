@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlueNestKaraoke.Account
+namespace BlueNestKaraoke.Pages
 {
     public class LoginModel(SignInManager<ApplicationUser> signInManager) : PageModel
     {
