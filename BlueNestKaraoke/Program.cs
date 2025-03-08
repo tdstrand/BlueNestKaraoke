@@ -5,21 +5,19 @@ using Microsoft.EntityFrameworkCore;
 using BlueNestKaraoke.Data;
 using BlueNestKaraoke.Data.Entities;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseNpgsql(connectionString));
-
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
 })
 .AddEntityFrameworkStores<ApplicationContext>();
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -39,11 +37,9 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-
-builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -51,7 +47,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
@@ -60,9 +55,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapRazorPages();
-app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
