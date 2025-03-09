@@ -4,3 +4,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.min.css">
     ...
 </head>
+<body>
+    @RenderBody()
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+</body>

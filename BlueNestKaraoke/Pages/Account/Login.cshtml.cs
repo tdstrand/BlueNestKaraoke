@@ -6,14 +6,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlueNestKaraoke.Pages
 {
-    public class LoginModel(SignInManager<ApplicationUser> signInManager) : PageModel
+    public class LoginModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
+        public LoginModel(SignInManager<ApplicationUser> signInManager)
+        {
+            _signInManager = signInManager;
+        }
 
         [BindProperty]
         public InputModel? Input { get; set; }
 
-        public String? ReturnUrl { get; set; }
+        public string ReturnUrl { get; set; }
+
+        public void OnGet(string returnUrl = null)
+        {
+            ReturnUrl = returnUrl ?? Url.Content("~/");
+        }
 
         public class InputModel
         {
@@ -27,9 +37,10 @@ namespace BlueNestKaraoke.Pages
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
-
-        public async Task<IActionResult> OnPostAsync()
+        
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid && Input != null && !string.IsNullOrWhiteSpace(Input.PhoneNumber) && !string.IsNullOrWhiteSpace(Input.Password))
             {
                 var result = await _signInManager.PasswordSignInAsync(Input.PhoneNumber!, Input.Password!, Input.RememberMe, lockoutOnFailure: false);
