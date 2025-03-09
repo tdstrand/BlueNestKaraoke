@@ -4,18 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlueNestKaraoke.Pages
+namespace BlueNestKaraoke.Pages.Account
 {
     public class RegisterModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
-        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private string? returnUrl;
 
         [BindProperty]
         public InputModel? Input { get; set; }
@@ -35,7 +30,7 @@ namespace BlueNestKaraoke.Pages
             public string? ConfirmPassword { get; set; }
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync()
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid && Input != null && !string.IsNullOrWhiteSpace(Input.PhoneNumber) && !string.IsNullOrWhiteSpace(Input.Password))
@@ -45,7 +40,7 @@ namespace BlueNestKaraoke.Pages
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect("returnUrl");
                 }
                 foreach (var error in result.Errors)
                 {

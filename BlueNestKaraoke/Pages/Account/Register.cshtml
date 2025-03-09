@@ -1,17 +1,17 @@
 ﻿@page
-@model BlueNestKaraoke.Pages.LoginModel
+@model BlueNestKaraoke.Pages.RegisterModel
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Register";
 }
 
 <div class="row">
     <div class="col-md-4">
         <div class="login-form">
-            <h2 class="text-center" style="color: #007BFF; font-family: 'Arial', sans-serif;">Login to Blue Nest Karaoke</h2>
+            <h2 class="text-center" style="color: #007BFF; font-family: 'Arial', sans-serif;">Create a New Account</h2>
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label for="PhoneNumber" style="color: #333333; font-family: 'Arial', sans-serif;">Phone Number</label>
+                    <label for="PhoneNumber">Phone Number</label>
                     <div class="input-with-icon">
                         <input asp-for="Input.PhoneNumber" class="form-control" id="PhoneNumber" placeholder="Enter your phone number" style="border-color: #007BFF;" />
                         <span class="icon"><i class="fas fa-phone" style="color: #007BFF;"></i></span>
@@ -19,24 +19,25 @@
                     <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label for="Password" style="color: #333333; font-family: 'Arial', sans-serif;">Password</label>
+                    <label for="Password">Password</label>
                     <div class="input-with-icon">
                         <input asp-for="Input.Password" class="form-control" id="Password" placeholder="Enter your password" style="border-color: #007BFF;" />
                         <span class="icon"><i class="fas fa-lock" style="color: #007BFF;"></i></span>
                     </div>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
-                <div class="form-group form-check">
-                    <input asp-for="Input.RememberMe" class="form-check-input" />
-                    <label asp-for="Input.RememberMe" class="form-check-label" style="color: #333333; font-family: 'Arial', sans-serif;">Remember me</label>
-                </div>
-                <button type="submit" class="btn-primary btn-block" style="background-color: #007BFF; color: #ffffff; font-family: 'Arial', sans-serif;">Log in</button>
                 <div class="form-group">
-                    <a href="/Account/ForgotPassword" style="color: #007BFF; font-family: 'Arial', sans-serif;">Forgot Password?</a>
+                    <label for="ConfirmPassword">Confirm Password</label>
+                    <div class="input-with-icon">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" id="ConfirmPassword" placeholder="Confirm your password" style="border-color: #007BFF;" />
+                        <span class="icon"><i class="fas fa-lock" style="color: #007BFF;"></i></span>
+                    </div>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
+                <button type="submit" class="btn-primary btn-block" style="background-color: #007BFF; color: #ffffff; font-family: 'Arial', sans-serif;">Register</button>
             </form>
             <p class="text-center">
-                Don't have an account? <a href="/Account/Register" style="color: #007BFF; font-family: 'Arial', sans-serif;">Sign up</a>
+                Already have an account? <a href="/Account/Login" style="color: #007BFF; font-family: 'Arial', sans-serif;">Log in</a>
             </p>
         </div>
     </div>
