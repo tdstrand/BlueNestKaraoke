@@ -2,15 +2,16 @@ using BlueNestKaraoke.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlueNestKaraoke.Pages
 {
-    public class LoginModel : PageModel
+    public class LogInModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager)
+        public LogInModel(SignInManager<ApplicationUser> signInManager)
         {
             _signInManager = signInManager;
         }
@@ -18,9 +19,9 @@ namespace BlueNestKaraoke.Pages
         [BindProperty]
         public InputModel? Input { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
 
-        public void OnGet(string returnUrl = null)
+        public void OnGet(string? returnUrl = null)
         {
             ReturnUrl = returnUrl ?? Url.Content("~/");
         }
@@ -37,21 +38,28 @@ namespace BlueNestKaraoke.Pages
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
-        
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid && Input != null && !string.IsNullOrWhiteSpace(Input.PhoneNumber) && !string.IsNullOrWhiteSpace(Input.Password))
             {
+                Console.WriteLine($"Attempting login with PhoneNumber: {Input.PhoneNumber}, Password length: {Input.Password.Length}, RememberMe: {Input.RememberMe}");
                 var result = await _signInManager.PasswordSignInAsync(Input.PhoneNumber!, Input.Password!, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return LocalRedirect(ReturnUrl);
+                    Console.WriteLine($"Login succeeded, redirecting to: {ReturnUrl}");
+                    return LocalRedirect(ReturnUrl ?? "/");
                 }
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                else
+                {
+                    Console.WriteLine($"Login failed: IsLockedOut={result.IsLockedOut}, RequiresTwoFactor={result.RequiresTwoFactor}, IsNotAllowed={result.IsNotAllowed}");
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                }
             }
             else
             {
+                Console.WriteLine("ModelState is invalid or Input is null");
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
             return Page();

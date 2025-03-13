@@ -6,7 +6,7 @@
 
 <div class="text-center">
     <h1 class="display-4" style="color: #007BFF;">Welcome to Blue Nest Karaoke</h1>
-    @if (User.Identity.IsAuthenticated)
+    @if (User?.Identity?.IsAuthenticated == true)
     {
         <p>Welcome, @User.Identity.Name! You are logged in.</p>
     }

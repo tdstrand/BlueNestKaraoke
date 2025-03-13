@@ -1,5 +1,5 @@
 ﻿@page
-@model BlueNestKaraoke.Pages.LoginModel
+@model BlueNestKaraoke.Pages.LogInModel
 @{
     ViewData["Title"] = "Log in";
 }
@@ -7,36 +7,31 @@
 <div class="row">
     <div class="col-md-4">
         <div class="login-form">
-            <h2 class="text-center" style="color: #007BFF; font-family: 'Arial', sans-serif;">Login to Blue Nest Karaoke</h2>
+            <h2 class="text-center">Login to Blue Nest Karaoke</h2>
             <form method="post">
+                <input asp-antiforgery />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label for="PhoneNumber" style="color: #333333; font-family: 'Arial', sans-serif;">Phone Number</label>
-                    <div class="input-with-icon">
-                        <input asp-for="Input.PhoneNumber" class="form-control" id="PhoneNumber" placeholder="Enter your phone number" style="border-color: #007BFF;" />
-                        <span class="icon"><i class="fas fa-phone" style="color: #007BFF;"></i></span>
-                    </div>
+                    <label for="PhoneNumber">Phone Number</label>
+                    <input asp-for="Input.PhoneNumber" class="form-control" id="PhoneNumber" placeholder="Enter your phone number" />
                     <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label for="Password" style="color: #333333; font-family: 'Arial', sans-serif;">Password</label>
-                    <div class="input-with-icon">
-                        <input asp-for="Input.Password" class="form-control" id="Password" placeholder="Enter your password" style="border-color: #007BFF;" />
-                        <span class="icon"><i class="fas fa-lock" style="color: #007BFF;"></i></span>
-                    </div>
+                    <label for="Password">Password</label>
+                    <input asp-for="Input.Password" class="form-control" id="Password" placeholder="Enter your password" />
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="form-group form-check">
                     <input asp-for="Input.RememberMe" class="form-check-input" />
-                    <label asp-for="Input.RememberMe" class="form-check-label" style="color: #333333; font-family: 'Arial', sans-serif;">Remember me</label>
+                    <label asp-for="Input.RememberMe" class="form-check-label">Remember me</label>
                 </div>
-                <button type="submit" class="btn-primary btn-block" style="background-color: #007BFF; color: #ffffff; font-family: 'Arial', sans-serif;">Log in</button>
+                <button type="submit" class="btn-primary btn-block">Log in</button>
                 <div class="form-group">
-                    <a href="/Account/ForgotPassword" style="color: #007BFF; font-family: 'Arial', sans-serif;">Forgot Password?</a>
+                    <a href="/Account/ForgotPassword">Forgot Password?</a>
                 </div>
             </form>
             <p class="text-center">
-                Don't have an account? <a href="/Account/Register" style="color: #007BFF; font-family: 'Arial', sans-serif;">Sign up</a>
+                Don't have an account? <a href="/Account/Register">Sign up</a>
             </p>
         </div>
     </div>
